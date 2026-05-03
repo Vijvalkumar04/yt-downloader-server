@@ -28,7 +28,7 @@ app.get('/api/video-info', async (req, res) => {
             return res.status(400).json({ error: 'Invalid or missing YouTube URL' });
         }
 
-        const info = await yt(url, { dumpJson: true });
+        const info = await yt(url, { dumpJson: true, extractorArgs: 'youtube:player_client=tv_embedded' });
         
         const details = {
             title: info.title,
@@ -62,16 +62,13 @@ app.get('/api/download', async (req, res) => {
         
         console.log(`Starting download for: ${title} with format: ${formatId}`);
         
-        const isLinux = process.platform === 'linux';
-        const ffmpegPath = isLinux ? 'ffmpeg' : ffmpeg;
-
         await yt(url, {
             format: formatId,
             output: filePath,
             ffmpegLocation: ffmpegPath,
             mergeOutputFormat: 'mp4',
             noPart: true,
-            extractorArgs: 'youtube:player_client=android'
+            extractorArgs: 'youtube:player_client=tv_embedded'
         });
 
         console.log(`Download complete, sending file: ${filePath}`);
