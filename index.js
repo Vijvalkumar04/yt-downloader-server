@@ -1,9 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-const yt = require('youtube-dl-exec');
+const { create } = require('youtube-dl-exec');
 const fs = require('fs');
 const path = require('path');
 const ffmpeg = require('ffmpeg-static');
+
+// Use system yt-dlp on Linux (Railway), bundled binary on Windows (local dev)
+const ytdlBin = process.platform === 'linux' ? 'yt-dlp' : undefined;
+const yt = ytdlBin ? create(ytdlBin) : require('youtube-dl-exec');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
