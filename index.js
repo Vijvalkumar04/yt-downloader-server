@@ -39,8 +39,8 @@ app.get('/api/video-info', async (req, res) => {
 
         res.json({ details, formats: [] });
     } catch (error) {
-        console.error('Error fetching video info:', error);
-        res.status(500).json({ error: 'Failed to fetch video information. Please try again.' });
+        console.error('Error fetching video info:', error.stderr || error.message || error);
+        res.status(500).json({ error: error.stderr || error.message || 'Failed to fetch video information. Please try again.' });
     }
 });
 
