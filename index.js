@@ -62,10 +62,13 @@ app.get('/api/download', async (req, res) => {
         
         console.log(`Starting download for: ${title} with format: ${formatId}`);
         
+        const isLinux = process.platform === 'linux';
+        const ffmpegPath = isLinux ? 'ffmpeg' : ffmpeg;
+
         await yt(url, {
             format: formatId,
-            output: `"${filePath}"`,
-            ffmpegLocation: `"${ffmpeg}"`,
+            output: filePath,
+            ffmpegLocation: ffmpegPath,
             mergeOutputFormat: 'mp4',
             noPart: true,
             extractorArgs: 'youtube:player_client=android'
